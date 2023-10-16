@@ -39,4 +39,4 @@ class BaseModel:
         d["__class__"] = type(self).__name__
         d["created_at"] = self.created_at.isoformat()
         d["updated_at"] = self.updated_at.isoformat()
-        return d
+        return

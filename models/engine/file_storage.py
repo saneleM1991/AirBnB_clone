@@ -2,6 +2,7 @@
 """FileStorage Module."""
 import json
 from pathlib import Path
+from typing import Any
 from models.base_model import BaseModel
 
 
@@ -32,20 +33,19 @@ class FileStorage:
 
     def save(self):
         """Serialize `__objects` to the JSON file."""
-        serialize_objects = {obj : FileStorage.__objects[obj].to_dict()
+        serialize_objects = {obj: FileStorage.__objects[obj].to_dict()
                              for obj in FileStorage.__objects.keys()}
         path = Path(FileStorage.__file_path)
         path.write_text(json.dumps(serialize_objects))
 
     def reload(self):
         """Reload object from json file"""
-        try:
-            with open(FileStorage.__file_path) as f:
-                objdict = json.load(f)
-                for o in objdict.values():
-                    cls_name = o["__class__"]
-                    del o["__class__"]
-                    self.new(eval(cls_name))
-        except FileNotFoundError:
-            return
-
+        p = Path("file.json")
+        if p.exists():
+            data = json.loads(p.read_text())
+            for value in data.values():
+                obj = globals()["BaseModel"](**value)
+                for key in value.keys():
+                    if key not in obj.to_dict().keys():
+                        setattr(obj, key, value[key])
+                self.new(obj)
