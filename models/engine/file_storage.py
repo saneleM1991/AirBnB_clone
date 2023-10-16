@@ -45,7 +45,5 @@ class FileStorage:
             data = json.loads(p.read_text())
             for value in data.values():
                 obj = globals()["BaseModel"](**value)
-                for key in value.keys():
-                    if key not in obj.to_dict().keys():
-                        setattr(obj, key, value[key])
                 self.new(obj)
+
