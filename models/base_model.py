@@ -32,7 +32,6 @@ class BaseModel:
 
     def __str__(self):
         """Return string representation of `BaseModel` class."""
-        print(self.__dict__.keys())
         return f"[{type(self).__name__}] ({self.id}) {self.__dict__}"
 
     def save(self):
