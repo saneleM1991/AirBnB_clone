@@ -46,4 +46,3 @@ class FileStorage:
             for value in data.values():
                 obj = globals()["BaseModel"](**value)
                 self.new(obj)
-
